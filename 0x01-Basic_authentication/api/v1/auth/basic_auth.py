@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""module for the basic authentication
+"""
 from .auth import Auth
 import base64
 from typing import TypeVar
@@ -41,8 +43,8 @@ class BasicAuth(Auth):
             self, decoded_base64_authorization_header: str) -> (str, str):
         """extracting credentials provided by user
         :return
-            : -user email
-            : -user password
+            :user email
+            :user password
         """
         decoded_b64 = decoded_base64_authorization_header
         if decoded_b64:
@@ -55,4 +57,6 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        """getting user from credentials that were set
+        """
         pass
