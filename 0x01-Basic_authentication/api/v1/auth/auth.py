@@ -4,10 +4,17 @@ from typing import List, TypeVar
 
 
 class Auth:
-    """Handles the authentication
+    """
+    Handles the authentication of users
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """checks if we need authentication to acess url
+        """
+        checks if we need authentication to acess url
+        :params
+            -path ehich is intended url
+            -excluded_paths which is paths needing auth
+        :return
+            True or False
         """
         new_path = path.rstrip("/") if path else None
         new_excluded_paths = [p.rstrip('/') for p in excluded_paths] \
@@ -24,7 +31,10 @@ class Auth:
         return False
 
     def authorization_header(self, request=None) -> str:
-        """header that has auth info
+        """
+        header that has auth info and identifies use
+        :params
+            -request
         """
         if request is None:
             return None

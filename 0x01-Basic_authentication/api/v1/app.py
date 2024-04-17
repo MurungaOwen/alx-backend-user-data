@@ -20,7 +20,6 @@ auth = Auth() if AUTH_TYPE == "auth" else None
 auth = BasicAuth() if AUTH_TYPE == "basic_auth" else None
 
 
-
 @app.errorhandler(401)
 def not_authorized(error) -> str:
     """When someone is not authenticated
@@ -45,8 +44,8 @@ def not_allowed(error) -> str:
 @app.before_request
 def before_request_func():
     """run before each request is processed"""
-    my_url_list =['/api/v1/status/', '/api/v1/unauthorized/',
-                  '/api/v1/forbidden/']
+    my_url_list = [
+        '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
     if auth and auth.require_auth(request.path, my_url_list):
         if not auth.authorization_header(request):
             abort(401)
