@@ -50,6 +50,8 @@ def before_request_func():
             abort(401)
         if not auth.current_user(request):
             abort(403)
+    if not auth:
+        abort(401)
 
 
 if __name__ == "__main__":
