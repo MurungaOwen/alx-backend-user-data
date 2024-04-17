@@ -54,7 +54,8 @@ class BasicAuth(Auth):
                 if len(data) == 2:
                     email, password = decoded_b64.split(':')
                     return email, password
-        return None
+                return None, None
+        return None, None
 
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str) -> TypeVar('User'):
