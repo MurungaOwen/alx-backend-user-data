@@ -22,28 +22,49 @@ auth = BasicAuth() if AUTH_TYPE == "basic_auth" else None
 
 @app.errorhandler(401)
 def not_authorized(error) -> str:
-    """When someone is not authenticated
+    """
+    When someone is not authenticated
+    Args
+        error: The error message
+    Returns:
+        A JSON response with an error message and status code 401.
     """
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """ Not found handler
+    """ 
+    Not found handler
+    Args:
+        error: The error message
+    Returns:
+        A JSON response with an error message and status code 404.
     """
     return jsonify({"error": "Not found"}), 404
 
 
 @app.errorhandler(403)
 def not_allowed(error) -> str:
-    """Not allowed to access the resource
+    """
+    notify user they are not allowed to access path
+    Args:
+        error: The error message.
+
+    Returns:
+        A JSON response with an error message and status code 403.
     """
     return jsonify({"error": "Forbidden"}), 403
 
 
 @app.before_request
 def before_request_func():
-    """run before each request is processed"""
+    """
+    run before each request is processed
+    Raises:
+        401 Unauthorized: If authentication is required but not provided.
+        403 Forbidden: If the user is not authorized to access the resource.
+    """
     my_url_list = [
         '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
     if auth and auth.require_auth(request.path, my_url_list):
