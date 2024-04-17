@@ -40,6 +40,9 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str) -> (str, str):
         """extracting credentials provided by user
+        :return
+            : -user email
+            : -user password
         """
         decoded_b64 = decoded_base64_authorization_header
         if decoded_b64:
