@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""module for the basic authentication
+"""
+module for the basic authentication
 """
 from .auth import Auth
 import base64

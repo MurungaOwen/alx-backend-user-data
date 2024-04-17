@@ -12,12 +12,13 @@ class Auth:
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
-        checks if we need authentication to acess url
+        checks if we dont need authentication
         :params
-            -path ehich is intended url
-            -excluded_paths which is paths needing auth
+            - path ehich is intended url
+            - excluded_paths which is paths needing auth
         :return
-            True or False
+            - True if we dont need authentication
+            - False if we need authentication
         """
         new_path = path.rstrip("/") if path else None
         new_excluded_paths = [p.rstrip('/') for p in excluded_paths] \
@@ -27,11 +28,10 @@ class Auth:
                 return True
             if new_path not in new_excluded_paths:
                 return True
-        if not new_path:
+        elif not new_path | (not new_excluded_paths):
             return True
-        if not new_excluded_paths:
-            return True
-        return False
+        else:
+            return False
 
     def authorization_header(self, request=None) -> str:
         """
@@ -39,12 +39,11 @@ class Auth:
         :params
             -request
         """
-        if request is None:
-            return None
-        elif 'Authorization' not in request.headers:
-            return None
-        else:
+        if request:
+            if 'Authorization' not in request.headers:
+                return None
             return request.headers.get("Authorization")
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """returns current user
