@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from .auth import Auth
 import base64
+from typing import TypeVar
 
 
 class BasicAuth(Auth):
@@ -33,6 +34,7 @@ class BasicAuth(Auth):
                     return decoded_string
                 except base64.binascii.Error:
                     return None
+            return None
         return None
     
     def extract_user_credentials(
@@ -43,9 +45,9 @@ class BasicAuth(Auth):
         if decoded_b64:
             if isinstance(decoded_b64, str):
                 data = decoded_b64.split(':')
-                if len(data) is 2:
+                if len(data) == 2:
                     email, password = decoded_b64.split(':')
-                return email, password
+                    return email, password
         return None
     
     def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
