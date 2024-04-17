@@ -34,7 +34,7 @@ def not_authorized(error) -> str:
 
 @app.errorhandler(404)
 def not_found(error) -> str:
-    """ 
+    """
     Not found handler
     Args:
         error: The error message
