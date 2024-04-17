@@ -36,7 +36,7 @@ class BasicAuth(Auth):
                     return None
             return None
         return None
-    
+
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str) -> (str, str):
         """extracting credentials provided by user
@@ -52,6 +52,7 @@ class BasicAuth(Auth):
                     email, password = decoded_b64.split(':')
                     return email, password
         return None
-    
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
         pass
