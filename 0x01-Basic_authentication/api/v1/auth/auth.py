@@ -4,6 +4,7 @@ module for authentication
 """
 from flask import request
 from typing import List, TypeVar
+from fnmatch import fnmatch
 
 
 class Auth:
@@ -20,18 +21,18 @@ class Auth:
             - True if we dont need authentication
             - False if we need authentication
         """
-        new_path = path.rstrip("/") if path else None
-        new_excluded_paths = [p.rstrip('/') for p in excluded_paths] \
-            if excluded_paths else None
-        if new_path and new_excluded_paths:
-            if len(excluded_paths) == 0:
-                return True
-            if new_path not in new_excluded_paths:
-                return True
-        elif not new_path | (not new_excluded_paths):
+        if not path:
             return True
-        else:
-            return False
+
+        path = path.rstrip("/")
+        if not excluded_paths:
+            return True
+
+        for excluded_path in excluded_paths:
+            if fnmatch(path, excluded_path.rstrip('*')):
+                return False
+
+        return True
 
     def authorization_header(self, request=None) -> str:
         """

@@ -206,3 +206,28 @@ Return None if your database (file) doesn’t contain any User instance with ema
 Return None if user_pwd is not the password of the User instance found - you must use the method is_valid_password of User
 Otherwise, return the User instance
 ```
+#### 11
+Basic - Overload current_user - and BOOM!
+Now, you have all pieces for having a complete Basic authentication.
+Add the method def current_user(self, request=None) -> TypeVar('User') in the class BasicAuth that overloads Auth and retrieves the User instance for a request:
+
+You must use authorization_header
+You must use extract_base64_authorization_header
+You must use decode_base64_authorization_header
+You must use extract_user_credentials
+You must use user_object_from_credentials
+With this update, now your API is fully protected by a Basic Authentication. Enjoy!
+
+#### 12
+Basic - Allow password with ":"
+#advanced
+Improve the method def extract_user_credentials(self, decoded_base64_authorization_header) to allow password with :.
+
+#### 13
+Require auth with stars
+advanced
+Improve def require_auth(self, path, excluded_paths) by allowing * at the end of excluded paths.
+Example for excluded_paths = ["/api/v1/stat*"]:
+/api/v1/users will return True
+/api/v1/status will return False
+/api/v1/stats will return False
