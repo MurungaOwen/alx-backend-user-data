@@ -8,6 +8,7 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
+from api.v1.auth.session_auth import SessionAuth
 import os
 
 
@@ -18,6 +19,7 @@ auth = None
 AUTH_TYPE = getenv("AUTH_TYPE")
 auth = Auth() if AUTH_TYPE == "auth" else None
 auth = BasicAuth() if AUTH_TYPE == "basic_auth" else None
+auth = SessionAuth() if AUTH_TYPE == "session_auth" else None
 
 
 @app.errorhandler(401)
@@ -66,8 +68,12 @@ def before_request_func():
         403 Forbidden: If the user is not authorized to access the resource.
     """
     my_url_list = [
-        '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
-    request.current_user = auth.current_user(request)
+        '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/',
+        '/api/v1/auth_session/login/']
+    request.current_user = auth.current_user(request) if auth else None
+    if not auth.authorization_header(request) and not \
+        auth.session_cookie(request):
+        abort(401)
     if auth and not(auth.require_auth(request.path, my_url_list)):
         if not auth.authorization_header(request):
             abort(401)

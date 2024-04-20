@@ -12,7 +12,10 @@ def view_all_users() -> str:
     Return:
       - list of all User objects JSON represented
     """
-    if not request.current_user:
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        abort(403)
+    elif not request.current_user:
         abort(401)
     all_users = [user.to_json() for user in User.all()]
     return jsonify(all_users)
@@ -30,7 +33,7 @@ def view_one_user(user_id: str = None) -> str:
     print(f"current user is {request.current_user}")
     if user_id == "me":
         if not request.current_user:
-            abort(404)
+            abort(403)
         else:
             return jsonify(request.current_user.to_json())
     else:

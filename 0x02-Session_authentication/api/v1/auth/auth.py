@@ -4,6 +4,7 @@ module for authentication
 """
 from flask import request
 from typing import List, TypeVar
+import os
 from fnmatch import fnmatch
 
 
@@ -49,4 +50,11 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """returns current user
         """
+        return None
+    
+    def session_cookie(self, request=None):
+        """return a cookie value from request"""
+        if request:
+            session_cookie_name = os.getenv("SESSION_NAME", "_my_session_id")
+            return request.cookies.get(session_cookie_name)
         return None
