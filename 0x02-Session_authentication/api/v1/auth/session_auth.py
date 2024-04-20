@@ -7,6 +7,7 @@ from models.user import User
 
 
 class SessionAuth(Auth):
+    """the session auth class and its working"""
     user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:

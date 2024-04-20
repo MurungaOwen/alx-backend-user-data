@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Route module for the API
+Route module for the API and the whole app
 """
 from os import getenv
 from api.v1.views import app_views
@@ -52,7 +52,6 @@ def not_allowed(error) -> str:
     notify user they are not allowed to access path
     Args:
         error: The error message.
-
     Returns:
         A JSON response with an error message and status code 403.
     """
