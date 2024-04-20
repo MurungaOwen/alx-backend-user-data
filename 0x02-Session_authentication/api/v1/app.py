@@ -72,9 +72,9 @@ def before_request_func():
         '/api/v1/auth_session/login/']
     request.current_user = auth.current_user(request) if auth else None
     if not auth.authorization_header(request) and not \
-        auth.session_cookie(request):
+            auth.session_cookie(request):
         abort(401)
-    if auth and not(auth.require_auth(request.path, my_url_list)):
+    if auth and not (auth.require_auth(request.path, my_url_list)):
         if not auth.authorization_header(request):
             abort(401)
         if not auth.current_user(request):
