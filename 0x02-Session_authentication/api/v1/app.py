@@ -67,14 +67,14 @@ def before_request_func():
     """
     my_url_list = [
         '/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
-    if auth and not auth.require_auth(request.path, my_url_list):
+    request.current_user = auth.current_user(request)
+    if auth and not(auth.require_auth(request.path, my_url_list)):
         if not auth.authorization_header(request):
             abort(401)
         if not auth.current_user(request):
             abort(403)
     if not auth:
         abort(401)
-    request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":

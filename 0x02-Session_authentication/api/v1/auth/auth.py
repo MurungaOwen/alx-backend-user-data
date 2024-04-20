@@ -25,14 +25,14 @@ class Auth:
             return True
 
         path = path.rstrip("/")
-        if not excluded_paths:
+        if not excluded_paths or len(excluded_paths) == 0:
             return True
 
         for excluded_path in excluded_paths:
             if fnmatch(path, excluded_path.rstrip('*')):
                 return False
 
-        return True
+            return True
 
     def authorization_header(self, request=None) -> str:
         """

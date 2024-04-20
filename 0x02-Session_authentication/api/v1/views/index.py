@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """ Module of Index views
 """
-from api.v1.auth.basic_auth import BasicAuth
-from flask import jsonify, abort, request
+from flask import jsonify, abort
 from api.v1.views import app_views
 
 
@@ -33,11 +32,7 @@ def not_auth() -> str:
     """
     abort(401)
 
-@app_views.route('/users/me', methods=['GET'])
-def current_user() -> str:
-    user = request.current_user
-    return jsonify(user)
-    
+
 @app_views.route('/api/v1/forbidden',  methods=['GET'])
 def forbidden() -> str:
     """raise when one is forbidden to access resource
