@@ -9,6 +9,8 @@ from flask_cors import (CORS, cross_origin)
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
 from api.v1.auth.session_auth import SessionAuth
+from api.v1.auth.session_exp_auth import SessionExpAuth
+from api.v1.auth.session_db_auth import SessionDBAuth
 import os
 
 
@@ -20,6 +22,8 @@ AUTH_TYPE = getenv("AUTH_TYPE")
 auth = Auth() if AUTH_TYPE == "auth" else None
 auth = BasicAuth() if AUTH_TYPE == "basic_auth" else None
 auth = SessionAuth() if AUTH_TYPE == "session_auth" else None
+auth = SessionExpAuth() if AUTH_TYPE == 'session_exp_auth' else None
+auth = SessionDBAuth() if AUTH_TYPE == 'session_db_auth' else None
 
 
 @app.errorhandler(401)
@@ -71,13 +75,13 @@ def before_request_func():
         '/api/v1/auth_session/login/']
     request.current_user = auth.current_user(request) if auth else None
     if auth and not (auth.require_auth(request.path, my_url_list)):
+        if auth.authorization_header(request) is None and \
+            auth.session_cookie(request) is None:
+            abort(401)
         if not auth.authorization_header(request):
             abort(401)
         if not auth.current_user(request):
             abort(403)
-    if auth.authorization_header(request) is None and \
-            auth.session_cookie(request) is None:
-        abort(401)
     if not auth:
         abort(401)
 
