@@ -10,6 +10,7 @@ import os
 class SessionExpAuth(SessionAuth):
     """class that makes a session expire after a time"""
     def __init__(self):
+        super().__init__()
         """initialise the class or like a constructor for the class"""
         session_duration_str = os.getenv("SESSION_DURATION", "0")
         try:
