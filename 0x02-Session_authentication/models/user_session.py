@@ -2,6 +2,7 @@
 """ user stored in database"""
 from .base import Base
 
+
 class UserSession(Base):
     """user session in a db"""
     def __init__(self, *args: list, **kwargs: dict):
