@@ -10,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 import bcrypt
+from typing import Dict
 
 
 class DB:
@@ -41,7 +42,7 @@ class DB:
         session.commit()
         return user
 
-    def find_user_by(self, *args, **kwargs) -> User:
+    def find_user_by(self, **kwargs: Dict) -> User:
         """finds a user based on provided details"""
         result = self._session.query(User).filter_by(**kwargs).first()
         if result:
@@ -52,7 +53,7 @@ class DB:
     def update_user(self, user_id: int, *args, **kwargs) -> None:
         """updates a user instance"""
         session = self._session
-        user = self.find_user_by({'id': user_id})
+        user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if hasattr(user, key):
                 setattr(user, key, value)

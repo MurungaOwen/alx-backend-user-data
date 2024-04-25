@@ -16,7 +16,7 @@ def _hash_password(password: str) -> bytes:
     return hashed_password
 
 
-def _generate_uuid():
+def _generate_uuid() -> str:
     """return a string representation of a new UUID"""
     return str(uuid.uuid4())
 
@@ -32,9 +32,8 @@ class Auth:
     def register_user(self, email: str, password: str) -> User:
         """register a user and returns a user instance"""
         try:
-            user_found = self._db.find_user_by(email=email)
-            if user_found:
-                raise ValueError(f'User {email} already exists')
+            self._db.find_user_by(email=email)
+            raise ValueError(f'User {email} already exists')
         except NoResultFound:
             hashed_passwd = _hash_password(password)
             added_user = self._db.add_user(email, hashed_passwd)
