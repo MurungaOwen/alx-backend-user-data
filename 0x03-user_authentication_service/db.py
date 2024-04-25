@@ -36,7 +36,7 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """adds a user to the database"""
-        session = self._session
+        session = self.__session
         user = User(email=email, hashed_password=hashed_password)
         session.add(user)
         session.commit()
@@ -44,7 +44,7 @@ class DB:
 
     def find_user_by(self, **kwargs: Dict) -> User:
         """finds a user based on provided details"""
-        result = self._session.query(User).filter_by(**kwargs).first()
+        result = self.__session.query(User).filter_by(**kwargs).first()
         if result:
             return result
         else:
@@ -52,7 +52,7 @@ class DB:
 
     def update_user(self, user_id: int, *args, **kwargs) -> None:
         """updates a user instance"""
-        session = self._session
+        session = self.__session
         user = self.find_user_by(id=user_id)
         for key, value in kwargs.items():
             if hasattr(user, key):
