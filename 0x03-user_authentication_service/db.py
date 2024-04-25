@@ -50,7 +50,7 @@ class DB:
         else:
             raise NoResultFound if not result else InvalidRequestError
 
-    def update_user(self, user_id: int, *args, **kwargs) -> None:
+    def update_user(self, user_id: int, **kwargs: Dict) -> None:
         """updates a user instance"""
         session = self._session
         user = self.find_user_by(id=user_id)
